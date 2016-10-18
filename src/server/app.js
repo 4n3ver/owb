@@ -6,6 +6,7 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import cors from "cors";
 import morgan from "morgan";
+import ws from "./ws";
 
 import routes from "./routes";
 import { PORT, IP, DB_URL } from "../config";
@@ -32,3 +33,5 @@ routes(app);
 const server = app.listen(PORT, IP, () => {
     console.log(`Server listening at ${IP}:${PORT}`);
 });
+
+ws.listen(server);
