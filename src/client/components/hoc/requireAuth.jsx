@@ -8,13 +8,13 @@ export default ComposedComponent => {
     class Authentication extends Component {
         componentWillMount() {
             if (!this.props.isAuthenticated) {
-                this.context.router.push("/");
+                this.context.router.push("/signin");
             }
         }
 
         componentWillUpdate(nextProps) {
             if (!nextProps.isAuthenticated) {
-                this.context.router.push("/");
+                this.context.router.push("/signin");
             }
         }
 

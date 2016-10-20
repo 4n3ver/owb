@@ -17,8 +17,7 @@ import SignOut from "./components/auth/SignOut";
 import SignUp from "./components/auth/SignUp";
 import reducers from "./reducers";
 import App from "./components/App";
-import Dummy from "./components/Dummy";
-import Welcome from "./components/Welcome";
+import GetStarted from "./components/GetStarted";
 
 const store = createStore(
     reducers,
@@ -43,11 +42,12 @@ ReactDOM.render(
     <Provider store={store}>
         <Router history={browserHistory}>
             <Route path="/" component={App}>
-                <IndexRoute component={Welcome}/>
-                <Route path="signin" component={SignIn}/>
+                <IndexRoute component={requireAuth(GetStarted)}/>
                 <Route path="signout" component={SignOut}/>
+            </Route>
+            <Route path="/">
+                <Route path="signin" component={SignIn}/>
                 <Route path="signup" component={SignUp}/>
-                <Route path="resources" component={requireAuth(Dummy)}/>
             </Route>
         </Router>
     </Provider>,

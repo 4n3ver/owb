@@ -1,3 +1,4 @@
+
 /* @flow */
 "use strict";
 
@@ -21,11 +22,17 @@ class FormInput extends Component {
                     ? " error"
                     : ""}`}>
                 <label>{this.props.label}</label>
-                <input
-                    {...this.props.input}
-                    type={this.props.type}
-                    placeholder={this.props.placeholder}
-                />
+                <div className={`ui input${this.props.children
+                    ? " action"
+                    : ""}`}>
+                    <input
+                        {...this.props.input}
+                        {...this.props.attr}
+                        type={this.props.type}
+                        placeholder={this.props.placeholder}
+                    />
+                    {this.props.children}
+                </div>
                 {hasError &&
                 <div className="ui error message">
                     {this.props.meta.error}
@@ -37,7 +44,8 @@ class FormInput extends Component {
 
 FormInput.propTypes = {
     name: React.PropTypes.string.isRequired,
-    type: React.PropTypes.string.isRequired
+    type: React.PropTypes.string.isRequired,
+    attr: React.PropTypes.object
 };
 
 FormInput.defaultProps = {};

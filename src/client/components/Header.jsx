@@ -33,18 +33,8 @@ class Header extends Component {
 
     render() {
         return (
-            <div className="ui fixed inverted segment">
-                <div className="ui inverted secondary pointing menu container">
-                    <span className="item">
-                        <Link to="/">
-                            Home
-                        </Link>
-                    </span>
-                    <span className="item">
-                        <Link to="/resources">
-                            Resources
-                        </Link>
-                    </span>
+            <div className="ui fixed inverted menu">
+                <div className="right menu">
                     {this._authLink()}
                 </div>
             </div>

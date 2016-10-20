@@ -1,1 +1,11 @@
+body {
+    padding-top: 60px;
+}
 
+.little-box {
+    max-width: 600px;
+}
+
+#app {
+    height: 100%;
+}

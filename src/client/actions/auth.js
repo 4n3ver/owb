@@ -36,7 +36,7 @@ const authenticate = endpoint =>
                     localStorage.setItem("token", data.token);
                     dispatch({type: AUTH_USER});
                     // redirect to /resource
-                    browserHistory.push("/resources");
+                    browserHistory.push("/");
                 } else {
                     dispatch(showAuthError(data.error));
                 }

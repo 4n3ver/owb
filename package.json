@@ -36,7 +36,8 @@
     "redux-form": "^6.0.2",
     "redux-thunk": "^2.1.0",
     "socket.io": "^1.5.0",
-    "socket.io-client": "^1.5.0"
+    "socket.io-client": "^1.5.0",
+    "uuid": "^2.0.3"
   },
   "devDependencies": {
     "babel-core": "^6.14.0",

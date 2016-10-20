@@ -2,10 +2,9 @@
 "use strict";
 
 import React, { Component } from "react";
-import Board from "./Board";
-import JoinSessionForm from "./JoinSessionForm";
+import { connect } from "react-redux";
 
-class Welcome extends Component {
+class Audience extends Component {
     constructor(props) {
         super(props);
         this._bind();
@@ -18,9 +17,18 @@ class Welcome extends Component {
 
     render() {
         return (
-            <JoinSessionForm/>
+            <div/>
         );
     }
 }
 
-export default Welcome;
+const mapStateToProps = state => ({
+});
+
+const mapDispatchToProps = {
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Audience);

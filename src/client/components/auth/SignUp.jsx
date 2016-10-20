@@ -4,6 +4,7 @@
 import { compose } from "redux";
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router";
 import { Field, reduxForm } from "redux-form";
 import FormInput, { required } from "../input/FormInput";
 import { signUpUser, showAuthError } from "../../actions";
@@ -41,10 +42,13 @@ class SignUp extends Component {
 
     render() {
         return (
-            <div className="ui segment">
+            <div className="ui middle aligned center aligned one column grid"
+                style={{height: "100%"}}>
+                <div className="little-box column">
+            <div className="ui inverted segment">
                 <form
                     onSubmit={this.props.handleSubmit(this._onSubmit)}
-                    className="ui form error">
+                    className="ui inverted form error">
                     <Field
                         component={FormInput}
                         name="email"
@@ -73,6 +77,14 @@ class SignUp extends Component {
                         Sign Up
                     </button>
                 </form>
+            </div>
+                    <div className="ui inverted segment">
+                        Already have an account?
+                        <Link to="/signin">
+                            {" Sign in"}
+                        </Link>
+                    </div>
+                </div>
             </div>
         );
     }

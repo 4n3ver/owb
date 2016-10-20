@@ -7,9 +7,9 @@ import Header from "./Header";
 export default class App extends Component {
     render() {
         return (
-            <div>
+            <div style={{height: "100%"}} >
                 <Header/>
-                <div className="ui container">
+                <div style={{height: "100%"}} className="ui container">
                     {this.props.children}
                 </div>
             </div>
