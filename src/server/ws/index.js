@@ -16,7 +16,12 @@ const setupEventListener = nsp => {
         socket.once("disconnect", function () {
             socket.disconnect();    // make sure to close half-open connection
         });
+        socket.on("board-drawn", payload => {
+            nsp.emit("board-update", payload);
+        });
     });
+
+
 };
 
 export const createNameSpace = name => setupEventListener(io.of(name));

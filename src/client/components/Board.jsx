@@ -27,6 +27,13 @@ class Board extends Component {
 
     _onClear() {
         this.canvas.clear();
+        this.props.onDraw(this.canvas);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        console.log(nextProps);
+        this.canvas.loadFromJSON(nextProps.boardState,
+                                 this.canvas.renderAll.bind(this.canvas));
     }
 
     componentDidMount() {
@@ -34,6 +41,7 @@ class Board extends Component {
         this.canvas.isDrawingMode = this.props.allowDraw;
         this.canvas.freeDrawingBrush.width = 3;
         this.canvas.freeDrawingBrush.color = "#FFF";
+        this.canvas.on("mouse:up", () => this.props.onDraw(this.canvas));
     }
 
     render() {
@@ -45,6 +53,7 @@ class Board extends Component {
                             <canvas id="board" width={this.props.width}
                                 height={this.props.height}/>
                         </div>
+                        {this.props.allowDraw &&
                         <div className="ui compact segment">
                             <button
                                 className="ui compact inverted circular green icon mini button"
@@ -61,7 +70,7 @@ class Board extends Component {
                                 onClick={this._onClear}>
                                 <i className="icon remove"/>
                             </button>
-                        </div>
+                        </div>}
                     </div>
                 </div>
             </div>
@@ -70,11 +79,15 @@ class Board extends Component {
 }
 
 Board.propTypes = {
-    height: React.PropTypes.number.isRequired,
-    width : React.PropTypes.number.isRequired,
-    allowDraw: React.PropTypes.bool.isRequired
+    height    : React.PropTypes.number.isRequired,
+    width     : React.PropTypes.number.isRequired,
+    allowDraw : React.PropTypes.bool.isRequired,
+    onDraw    : React.PropTypes.func,
+    boardState: React.PropTypes.string
 };
 
-Board.defaultProps = {};
+Board.defaultProps = {
+    onDraw: () => null
+};
 
 export default Board;

@@ -13,14 +13,15 @@ import reduxThunk from "redux-thunk";
 import { AUTH_USER } from "./actions/types";
 import requireAuth from "./components/hoc/requireAuth";
 import requireActiveSession from "./components/hoc/requireActiveSession";
+import connectSession from "./components/hoc/connectSession";
 import reducers from "./reducers";
 import App from "./components/App";
 import GetStarted from "./components/GetStarted";
 import SignIn from "./components/auth/SignIn";
 import SignOut from "./components/auth/SignOut";
 import SignUp from "./components/auth/SignUp";
-import Audience from "./components/dashboard/Audience";
-import Speaker from "./components/dashboard/Speaker";
+import Audience from "./components/session/Audience";
+import Speaker from "./components/session/Speaker";
 
 const store = createStore(
     reducers,
@@ -47,13 +48,15 @@ ReactDOM.render(
             <Route path="/" component={App}>
                 <IndexRoute component={requireAuth(GetStarted)}/>
                 <Route path="audience" component={compose(
-                        requireActiveSession,
-                        requireAuth
-                    )(Audience)}/>
+                    connectSession,
+                    requireActiveSession,
+                    requireAuth
+                )(Audience)}/>
                 <Route path="speaker" component={compose(
-                        requireActiveSession,
-                        requireAuth
-                    )(Speaker)}/>
+                    connectSession,
+                    requireActiveSession,
+                    requireAuth
+                )(Speaker)}/>
                 <Route path="signout" component={requireAuth(SignOut)}/>
             </Route>
             <Route path="/">

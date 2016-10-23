@@ -2,8 +2,6 @@
 "use strict";
 
 import React, { Component } from "react";
-import { connect } from "react-redux";
-
 import Board from "../Board";
 
 class Speaker extends Component {
@@ -21,19 +19,12 @@ class Speaker extends Component {
         return (
             <div>
                 Hello Speaker!
-                <Board height={500} width={500} allowDraw={true}/>
+                <Board height={500} width={500} allowDraw={true}
+                    onDraw={d => this.props.socket.emit("board-drawn",
+                                                        JSON.stringify(d))}/>
             </div>
         );
     }
 }
 
-const mapStateToProps = state => ({
-});
-
-const mapDispatchToProps = {
-};
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Speaker);
+export default Speaker;
