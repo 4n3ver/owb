@@ -4,6 +4,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
+import Board from "../Board";
+
 class Speaker extends Component {
     constructor(props) {
         super(props);
@@ -17,7 +19,10 @@ class Speaker extends Component {
 
     render() {
         return (
-            <div/>
+            <div>
+                Hello Speaker!
+                <Board height={500} width={500} allowDraw={true}/>
+            </div>
         );
     }
 }

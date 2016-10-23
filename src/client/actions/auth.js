@@ -3,7 +3,7 @@
 
 import { browserHistory } from "react-router";
 import { API_URL } from "../../config";
-import { AUTH_USER, UNAUTH_USER, AUTH_ERROR, FETCH_USER_DATA } from "./types";
+import { AUTH_USER, UNAUTH_USER, AUTH_ERROR } from "./types";
 
 const createPostRequest = (endpoint, objectPayload) =>
     new Request(`${API_URL}${endpoint}`, {
@@ -34,8 +34,8 @@ const authenticate = endpoint =>
             ).then(data => {
                 if (data.token) {
                     localStorage.setItem("token", data.token);
+                    localStorage.setItem("email", email);
                     dispatch({type: AUTH_USER});
-                    // redirect to /resource
                     browserHistory.push("/");
                 } else {
                     dispatch(showAuthError(data.error));
@@ -50,32 +50,13 @@ export const signInUser = authenticate("/signin");
 export const signUpUser = authenticate("/signup");
 export const signOutUser = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("email");
     return {type: UNAUTH_USER};
 };
-
-// demo on how to do auth get
-export const fetchUserData = endpoint => dispatch =>
-    fetch(`${API_URL}${endpoint}`,
-        {
-            method : "GET",
-            headers: {"Authorization": localStorage.getItem("token")}
-        }
-    ).then(
-        response => response.json()
-    ).then(
-        data =>
-            dispatch(
-                {
-                    type   : FETCH_USER_DATA,
-                    payload: data
-                }
-            )
-    );
 
 export default {
     signInUser,
     signUpUser,
     signOutUser,
-    showAuthError,
-    fetchUserData
+    showAuthError
 };

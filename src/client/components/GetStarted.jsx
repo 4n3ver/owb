@@ -18,8 +18,7 @@ const mapStateToProps = state => ({
     userData: state.auth.userData
 });
 
-const mapDispatchToProps = {
-};
+const mapDispatchToProps = {};
 
 export default connect(
     mapStateToProps,

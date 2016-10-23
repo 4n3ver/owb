@@ -6,6 +6,7 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
 import FormInput, { required, pattern } from "./input/FormInput";
+import { createSession, joinSession } from "../actions";
 
 class SessionStartForm extends Component {
     constructor(props) {
@@ -19,7 +20,14 @@ class SessionStartForm extends Component {
     }
 
     _onSubmit(payload) {
+        this.props.joinSession(payload["session-id"]);
+    }
 
+    componentWillMount() {
+        const activeSessionID = localStorage.getItem("active-session-id");
+        if (activeSessionID) {
+            this.props.joinSession(activeSessionID);
+        }
     }
 
     render() {
@@ -50,7 +58,8 @@ class SessionStartForm extends Component {
                             className="ui horizontal inverted divider">
                             Or
                         </div>
-                        <div className="ui mini primary button">
+                        <div className="ui mini primary button"
+                            onClick={this.props.createSession}>
                             Start New Session
                         </div>
                     </div>
@@ -62,7 +71,10 @@ class SessionStartForm extends Component {
 
 const mapStateToProps = state => ({});
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+    createSession,
+    joinSession
+};
 
 const validateForm = (values, props) =>
     pattern(/[a-zA-Z0-9]{8}/, "Invalid Session ID", "session-id")(

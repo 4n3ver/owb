@@ -31,7 +31,7 @@ class Board extends Component {
 
     componentDidMount() {
         this.canvas = new fabric.Canvas("board");
-        this.canvas.isDrawingMode = true;
+        this.canvas.isDrawingMode = this.props.allowDraw;
         this.canvas.freeDrawingBrush.width = 3;
         this.canvas.freeDrawingBrush.color = "#FFF";
     }
@@ -71,7 +71,8 @@ class Board extends Component {
 
 Board.propTypes = {
     height: React.PropTypes.number.isRequired,
-    width : React.PropTypes.number.isRequired
+    width : React.PropTypes.number.isRequired,
+    allowDraw: React.PropTypes.bool.isRequired
 };
 
 Board.defaultProps = {};
