@@ -57,7 +57,7 @@ export const joinSession = sessionID =>
             }
         },
         (dispatch, reason) => {
-            console.log(reason);
+            console.error("AUTH_POST", reason);
             dispatch(showSessionError("Session does not exists"));
         }
     );

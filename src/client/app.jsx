@@ -13,7 +13,6 @@ import reduxThunk from "redux-thunk";
 import { AUTH_USER } from "./actions/types";
 import requireAuth from "./components/hoc/requireAuth";
 import requireActiveSession from "./components/hoc/requireActiveSession";
-import connectSession from "./components/hoc/connectSession";
 import reducers from "./reducers";
 import App from "./components/App";
 import GetStarted from "./components/GetStarted";
@@ -48,12 +47,10 @@ ReactDOM.render(
             <Route path="/" component={App}>
                 <IndexRoute component={requireAuth(GetStarted)}/>
                 <Route path="audience" component={compose(
-                    connectSession,
                     requireActiveSession,
                     requireAuth
                 )(Audience)}/>
                 <Route path="speaker" component={compose(
-                    connectSession,
                     requireActiveSession,
                     requireAuth
                 )(Speaker)}/>

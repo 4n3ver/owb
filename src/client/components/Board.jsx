@@ -31,7 +31,6 @@ class Board extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps);
         this.canvas.loadFromJSON(nextProps.boardState,
                                  this.canvas.renderAll.bind(this.canvas));
     }

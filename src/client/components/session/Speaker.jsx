@@ -3,6 +3,7 @@
 
 import React, { Component } from "react";
 import Board from "../Board";
+import connectSession from "../hoc/connectSession";
 
 class Speaker extends Component {
     constructor(props) {
@@ -18,7 +19,6 @@ class Speaker extends Component {
     render() {
         return (
             <div>
-                Hello Speaker!
                 <Board height={500} width={500} allowDraw={true}
                     onDraw={d => this.props.socket.emit("board-drawn",
                                                         JSON.stringify(d))}/>
@@ -27,4 +27,4 @@ class Speaker extends Component {
     }
 }
 
-export default Speaker;
+export default connectSession(Speaker);

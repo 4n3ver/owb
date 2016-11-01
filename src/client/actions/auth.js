@@ -49,8 +49,7 @@ const authenticate = endpoint =>
 export const signInUser = authenticate("/signin");
 export const signUpUser = authenticate("/signup");
 export const signOutUser = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("email");
+    localStorage.clear();
     return {type: UNAUTH_USER};
 };
 

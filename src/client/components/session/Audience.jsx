@@ -3,6 +3,7 @@
 
 import React, { Component } from "react";
 import Board from "../Board";
+import connectSession from "../hoc/connectSession";
 
 class Audience extends Component {
     constructor(props) {
@@ -18,7 +19,7 @@ class Audience extends Component {
             method => this[method] = this[method].bind(this));
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.props.socket.on("board-update", payload =>
             this.setState({board: payload}));
     }
@@ -26,7 +27,6 @@ class Audience extends Component {
     render() {
         return (
             <div>
-                Hello Audience!
                 <Board height={500} width={500} allowDraw={false}
                     boardState={this.state.board}/>
             </div>
@@ -34,4 +34,4 @@ class Audience extends Component {
     }
 }
 
-export default Audience;
+export default connectSession(Audience);

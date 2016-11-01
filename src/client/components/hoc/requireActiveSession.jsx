@@ -12,11 +12,7 @@ export default ComposedComponent => {
             }
         }
 
-        componentWillUpdate(nextProps) {
-            //if (!nextProps.sessionEndPoint) {
-            //    this.context.router.push("/signin");
-            //}
-        }
+        componentWillUpdate(nextProps) {}
 
         render() {
             return (
