@@ -4,17 +4,18 @@
 import React, { Component } from "react";
 import ws from "socket.io-client";
 import { connect } from "react-redux";
+import rtc from "rtc-quickconnect";
+import attach from "rtc-attach";
 import { API_URL } from "../../../config";
 
 export default ComposedComponent => {
     class ConnectSession extends Component {
         constructor(props) {
             super(props);
-            this._bind("_onConnected", "_onDisconnected");
-            this.state = {
-                connectionStatus: "disconnected"
-            };
+            this._bind("_onConnected", "_onDisconnected", "_setupVoiceRTC");
+            this.state = {connectionStatus: "disconnected"};
             this.socket = ws(`${API_URL}${this.props.sessionEndPoint}`);
+            this.stream = navigator.mediaDevices.getUserMedia({audio: true});
         }
 
         _bind(...methods) {
@@ -28,6 +29,44 @@ export default ComposedComponent => {
 
         _onDisconnected() {
             this.setState({connectionStatus: "disconnected"});
+        }
+
+        _setupVoiceRTC(audioContainer) {
+            this.stream
+                .then(localStream => {
+                    console.log(localStream);
+                    // initiate connection
+                    rtc("https://switchboard.rtc.io/", {
+                        room : this.props.sessionEndPoint,
+                        debug: true
+                    })
+                    // broadcast our captured media to
+                    // other participants in the room
+                        .addStream(localStream)
+                        // when a peer is connected (and
+                        // active) pass it to us for use
+                        .on("call:started",
+                            function (id, pc, data) {
+                                console.log(id, data);
+                                console.log(
+                                    pc.getRemoteStreams());
+                                attach(
+                                    pc.getRemoteStreams()[0],
+                                    {el: audioContainer}, (err, el) => {
+                                        console.log(err, el);
+                                    }
+                                );
+                            })
+                        // when a peer leaves, remove teh
+                        // media
+                        .on("call:ended", function (id) {
+                            console.log("ENDED", id);
+                        });
+                })
+                .catch(
+                    err =>
+                        console.error("ConnectSession", err)
+                );
         }
 
         componentDidMount() {
@@ -51,6 +90,7 @@ export default ComposedComponent => {
                         </h5>
                     </div>
                     <ComposedComponent {...this.props} socket={this.socket}/>
+                    <audio ref={this._setupVoiceRTC}/>
                 </div>
             );
         }

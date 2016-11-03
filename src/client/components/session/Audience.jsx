@@ -22,6 +22,7 @@ class Audience extends Component {
     componentDidMount() {
         this.props.socket.on("board-update", payload =>
             this.setState({board: payload}));
+        console.log(this.props.stream);
     }
 
     render() {

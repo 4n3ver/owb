@@ -12,7 +12,8 @@ export default ComposedComponent => {
             }
         }
 
-        componentWillUpdate(nextProps) {}
+        componentWillUpdate(nextProps) {
+        }
 
         render() {
             return (
