@@ -33,40 +33,38 @@ export default ComposedComponent => {
 
         _setupVoiceRTC(audioContainer) {
             this.stream
-                .then(localStream => {
-                    console.log(localStream);
-                    // initiate connection
-                    rtc("https://switchboard.rtc.io/", {
-                        room : this.props.sessionEndPoint,
-                        debug: true
-                    })
-                    // broadcast our captured media to
-                    // other participants in the room
-                        .addStream(localStream)
-                        // when a peer is connected (and
-                        // active) pass it to us for use
-                        .on("call:started",
-                            function (id, pc, data) {
-                                console.log(id, data);
-                                console.log(
-                                    pc.getRemoteStreams());
-                                attach(
-                                    pc.getRemoteStreams()[0],
-                                    {el: audioContainer}, (err, el) => {
-                                        console.log(err, el);
-                                    }
-                                );
+                .then(
+                    localStream =>
+                        // initiate connection
+                        rtc("https://switchboard.rtc.io/", {
+                            room : this.props.sessionEndPoint,
+                            debug: true
+                        })
+
+                            // broadcast our captured media to other
+                            // participants in the room
+                            .addStream(localStream)
+
+                            // when a peer is connected (and active) pass it
+                            // to us for use
+                            .on("call:started",
+                                function (id, pc, data) {
+                                    attach(
+                                        pc.getRemoteStreams()[0],
+                                        {el: audioContainer}, (err, el) => {
+                                            // TODO: what to do here?
+                                            console.log(err, el);
+                                        }
+                                    );
+                                })
+
+                            // when a peer leaves
+                            .on("call:ended", function (id) {
+                                // TODO: need to terminate the stream
+                                console.log("ENDED", id);
                             })
-                        // when a peer leaves, remove teh
-                        // media
-                        .on("call:ended", function (id) {
-                            console.log("ENDED", id);
-                        });
-                })
-                .catch(
-                    err =>
-                        console.error("ConnectSession", err)
-                );
+                )
+                .catch(err => console.error("ConnectSession", err));
         }
 
         componentDidMount() {
