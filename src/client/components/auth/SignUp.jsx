@@ -6,7 +6,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router";
 import { Field, reduxForm } from "redux-form";
-import FormInput, { required } from "../input/FormInput";
+import FormInput from "../input/FormInput";
+import { required } from "../../utils/form-validator";
 import { signUpUser, showAuthError } from "../../actions";
 
 class SignUp extends Component {

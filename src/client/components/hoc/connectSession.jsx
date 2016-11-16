@@ -38,7 +38,7 @@ export default ComposedComponent => {
                         // initiate connection
                         rtc("https://switchboard.rtc.io/", {
                             room : this.props.sessionEndPoint,
-                            debug: true
+                            debug: false
                         })
 
                             // broadcast our captured media to other
@@ -48,14 +48,17 @@ export default ComposedComponent => {
                             // when a peer is connected (and active) pass it
                             // to us for use
                             .on("call:started",
-                                function (id, pc, data) {
-                                    attach(
-                                        pc.getRemoteStreams()[0],
-                                        {el: audioContainer}, (err, el) => {
-                                            // TODO: what to do here?
-                                            console.log(err, el);
-                                        }
-                                    );
+                                (id, pc, data) => {
+                                    if (this.props.route.path === "audience") {
+                                        attach(
+                                            pc.getRemoteStreams()[0],
+                                            {el: audioContainer},
+                                            (err, el) => {
+                                                // TODO: what to do here?
+                                                //console.log(err, el);
+                                            }
+                                        );
+                                    }
                                 })
 
                             // when a peer leaves

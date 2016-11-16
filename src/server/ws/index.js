@@ -15,6 +15,17 @@ const onBoardDrawn = (data, all) => function (payload) {
     data.board = payload;
 };
 
+const onQuestionAsked = (data, all) => function (payload) {
+    all.emit("question", payload);
+    data.question = payload;
+    data.responds = {};
+};
+
+const onQuestionAnswered = (data, all) => function (payload) {
+    data.responds[this.id] = payload;
+    all.emit("question-responds", data.responds);
+};
+
 const onDisconnect = socket => function () {
     socket.disconnect();    // make sure to close half-open connection
 };
@@ -26,7 +37,12 @@ const setupEventListener = nsp => {
         console.log(`${socket.id} connected to ${nsp.name}`);
 
         socket.once("disconnect", onDisconnect(socket));
+
         socket.on("board-drawn", onBoardDrawn(data[nsp.name], nsp));
+        socket.on("question-asked", onQuestionAsked(data[nsp.name], nsp));
+        socket.on("question-answered",
+                  onQuestionAnswered(data[nsp.name], nsp));
+
         socket.emit("welcome", data[nsp.name]);
     });
 };

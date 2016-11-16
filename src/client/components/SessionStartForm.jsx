@@ -5,8 +5,9 @@ import React, { Component } from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
-import FormInput, { required, pattern } from "./input/FormInput";
+import FormInput from "./input/FormInput";
 import { createSession, joinSession } from "../actions";
+import { required, pattern } from "../utils/form-validator";
 
 class SessionStartForm extends Component {
     constructor(props) {
@@ -23,7 +24,7 @@ class SessionStartForm extends Component {
         this.props.joinSession(payload["session-id"]);
     }
 
-    componentWillMount() {
+    componentDidMount() {
         const activeSessionID = localStorage.getItem("active-session-id");
         if (activeSessionID) {
             this.props.joinSession(activeSessionID);

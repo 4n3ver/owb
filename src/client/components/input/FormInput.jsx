@@ -51,20 +51,3 @@ FormInput.propTypes = {
 FormInput.defaultProps = {};
 
 export default FormInput;
-
-export const required = (...fieldName) => (values, props, errors = {}) => {
-    fieldName.forEach(name => !values[name]
-        ? errors[name] = "Required!"
-        : null
-    );
-    return errors;
-};
-
-export const pattern = (pattern, errorMessage, ...fieldName) =>
-    (values, props, errors = {}) => {
-        fieldName.forEach(name => values[name] && !pattern.test(values[name])
-            ? errors[name] = `${name}: ${errorMessage}`
-            : null
-        );
-        return errors;
-    };
