@@ -14,6 +14,7 @@ export default ComposedComponent => {
             super(props);
             this._bind("_onConnected", "_onDisconnected", "_setupVoiceRTC");
             this.state = {connectionStatus: "disconnected"};
+            console.log(`MAKE SURE OKAY: ${API_URL}${this.props.sessionEndPoint}`);
             this.socket = ws(`${API_URL}${this.props.sessionEndPoint}`);
             this.stream = navigator.mediaDevices.getUserMedia({audio: true});
         }
