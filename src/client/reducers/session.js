@@ -11,9 +11,7 @@ export default (state = {}, action) => {
                 error: ""
             });
         case CLOSE_SESSION:
-            return Object.assign({}, state, {
-                error: ""
-            });
+            return {};
         case SESSION_ERROR:
             return Object.assign({}, state, {
                 error: action.payload

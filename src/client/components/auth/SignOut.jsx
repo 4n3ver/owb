@@ -3,11 +3,12 @@
 
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { signOutUser } from "../../actions";
+import { signOutUser, closeSession } from "../../actions";
 
 class SignOut extends Component {
     componentWillMount() {
         this.props.signOutUser();
+        this.props.closeSession();
     }
 
     render() {
@@ -18,7 +19,8 @@ class SignOut extends Component {
 }
 
 const mapDispatchToProps = {
-    signOutUser
+    signOutUser,
+    closeSession
 };
 
 export default connect(

@@ -34,16 +34,16 @@ export default ComposedComponent => {
         _setupVoiceRTC(audioContainer) {
             this.stream
                 .then(
-                    localStream =>
+                    localStream => {
                         // initiate connection
-                        rtc("https://switchboard.rtc.io/", {
+                        this.rtc = rtc("https://switchboard.rtc.io/", {
                             room : this.props.sessionEndPoint,
                             debug: false
-                        })
+                        });
 
-                            // broadcast our captured media to other
-                            // participants in the room
-                            .addStream(localStream)
+                        // broadcast our captured media to other
+                        // participants in the room
+                        this.rtc.addStream(localStream)
 
                             // when a peer is connected (and active) pass it
                             // to us for use
@@ -65,14 +65,18 @@ export default ComposedComponent => {
                             .on("call:ended", function (id) {
                                 // TODO: need to terminate the stream
                                 console.log("ENDED", id);
-                            })
-                )
+                            });
+                    })
                 .catch(err => console.error("ConnectSession", err));
         }
 
         componentDidMount() {
             this.socket.on("connect", this._onConnected);
             this.socket.on("disconnect", this._onDisconnected);
+        }
+
+        componentWillUnmount() {
+            this.rtc.close();
         }
 
         render() {
@@ -91,7 +95,8 @@ export default ComposedComponent => {
                         </h5>
                     </div>
                     <ComposedComponent {...this.props} socket={this.socket}/>
-                    <audio ref={this._setupVoiceRTC}/>
+                    {
+                        <audio ref={this._setupVoiceRTC}/>}
                 </div>
             );
         }
