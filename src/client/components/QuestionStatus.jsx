@@ -18,7 +18,7 @@ class QuestionStatus extends Component {
     _renderOptions(opt, i) {
         return (
             <div key={i}>
-                <strong>{`${String.fromCharCode(i + 65)}.`}</strong>{` ${opt}`}
+                <strong>{`${String.fromCharCode(i + 65)}. `}</strong>{opt}
             </div>
         );
     }
@@ -33,7 +33,6 @@ class QuestionStatus extends Component {
             prev[data[curr]]++;
             return prev;
         }, {});
-        console.log(talliedData, data);
         return [
             {
                 values: Object.keys(talliedData).map((key) => ({
@@ -51,15 +50,19 @@ class QuestionStatus extends Component {
                     Polling Status
                 </div>
                 {this.props.question &&
+                    <div>
+                        <h3>{this.props.question.prompt}</h3>
+                        {this.props.question.options.map(this._renderOptions)}
+                    </div>
+                }
+                {this.props.responds &&
                 <div>
                     <BarChart
-                        title={this.props.question.prompt}
                         data={this._makeBarGraph(this.props.responds)}
                         width={window.innerWidth * 0.4}
                         height={window.innerHeight * 0.2}
-                        margin={{top: 10, bottom: 30, left: 30, right: 10}}
+                        margin={{top: 30, bottom: 30, left: 30, right: 10}}
                     />
-                    {this.props.question.options.map(this._renderOptions)}
                 </div>
                 }
             </div>

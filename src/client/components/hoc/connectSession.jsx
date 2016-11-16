@@ -77,7 +77,9 @@ export default ComposedComponent => {
         }
 
         componentWillUnmount() {
-            this.rtc.close();
+            if (this.rtc) {
+                this.rtc.close();
+            }
         }
 
         render() {
