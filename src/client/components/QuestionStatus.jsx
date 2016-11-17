@@ -59,7 +59,7 @@ class QuestionStatus extends Component {
                 <div>
                     <BarChart
                         data={this._makeBarGraph(this.props.responds)}
-                        width={window.innerWidth * 0.4}
+                        width={window.innerWidth * 0.28}
                         height={window.innerHeight * 0.2}
                         margin={{top: 30, bottom: 30, left: 30, right: 10}}
                     />

@@ -48,7 +48,21 @@ export const create = owner => {
     };
 };
 
+export const close = owner => {
+    const session = sessionMap[
+        Object.keys(sessionMap).find(id => sessionMap[id].owner === owner)];
+    if (session) {
+        console.log(`Session ${session.id} closed`);
+        delete sessionMap[session.id];
+        return {error: false};
+    } else {
+        console.log(`Closing session ${session.id} failed`);
+        return {error: true};
+    }
+};
+
 export default {
     create,
-    join
+    join,
+    close
 };

@@ -36,10 +36,14 @@ class Audience extends Component {
         const socket = this.props.socket;
         return (
             <div>
-                <Board height={500} width={500} allowDraw={false}
+                <Board height={500} width={1100} allowDraw={false}
                     boardState={this.state.board}/>
-                <Question question={this.state.question}
-                    onAnswer={d => socket.emit("question-answered", d)}/>
+                <div className="ui one column grid">
+                    <div className="column">
+                        <Question question={this.state.question}
+                            onAnswer={d => socket.emit("question-answered", d)}/>
+                    </div>
+                </div>
             </div>
         );
     }

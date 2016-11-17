@@ -7,8 +7,8 @@ import { signOutUser, closeSession } from "../../actions";
 
 class SignOut extends Component {
     componentWillMount() {
-        this.props.signOutUser();
         this.props.closeSession();
+        this.props.signOutUser();
     }
 
     render() {

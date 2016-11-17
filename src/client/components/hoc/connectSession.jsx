@@ -75,7 +75,6 @@ export default ComposedComponent => {
                                 // TODO: need to terminate the stream
                                 console.log("ENDED", id);
                             });
-                        console.log(this.rtc);
                     })
                 .catch(err => console.error("ConnectSession", err));
         }

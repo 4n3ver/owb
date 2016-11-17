@@ -62,9 +62,22 @@ export const joinSession = sessionID =>
         }
     );
 
-export const closeSession = () => ({
-    type: CLOSE_SESSION
-});
+export const closeSession = () =>
+    post(
+        "/session/close",
+        {requester: localStorage.getItem("email")},
+        (dispatch, data) => {
+            if (!data.error) {
+                dispatch({type: CLOSE_SESSION});
+            } else {
+                dispatch(showSessionError("Session failed to close!"));
+            }
+        },
+        (dispatch, reason) => {
+            console.log(reason);
+            dispatch(showSessionError(reason));
+        }
+    );
 
 export default {
     createSession,

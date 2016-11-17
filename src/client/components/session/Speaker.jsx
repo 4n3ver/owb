@@ -39,12 +39,18 @@ class Speaker extends Component {
         const socket = this.props.socket;
         return (
             <div>
-                <Board height={500} width={500} allowDraw={true} onDraw={
+                <Board height={500} width={1100} allowDraw={true} onDraw={
                         d => socket.emit("board-drawn", JSON.stringify(d))}/>
-                <AskQuestionForm
-                    onAsk={d => socket.emit("question-asked", d)}/>
-                <QuestionStatus responds={this.state.responds}
-                    question={this.state.question}/>
+                <div className="ui two column doubling grid">
+                    <div className="column">
+                        <AskQuestionForm
+                            onAsk={d => socket.emit("question-asked", d)}/>
+                    </div>
+                    <div className="column">
+                        <QuestionStatus responds={this.state.responds}
+                            question={this.state.question}/>
+                    </div>
+                </div>
             </div>
         );
     }
