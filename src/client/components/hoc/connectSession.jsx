@@ -12,9 +12,10 @@ export default ComposedComponent => {
     class ConnectSession extends Component {
         constructor(props) {
             super(props);
+            console.log(
+                `CONNECT_SESSION: ${API_URL}${this.props.sessionEndPoint}`);
             this._bind("_onConnected", "_onDisconnected", "_setupVoiceRTC");
             this.state = {connectionStatus: "disconnected"};
-            console.log(`MAKE SURE OKAY: ${API_URL}${this.props.sessionEndPoint}`);
             this.socket = ws(`${API_URL}${this.props.sessionEndPoint}`);
             this.stream = navigator.mediaDevices.getUserMedia({audio: true});
         }
@@ -33,6 +34,9 @@ export default ComposedComponent => {
         }
 
         _setupVoiceRTC(audioContainer) {
+            if (this.rtc) {
+                return;
+            }
             this.stream
                 .then(
                     localStream => {
@@ -42,6 +46,8 @@ export default ComposedComponent => {
                             debug: false
                         });
 
+                        this.localStream = localStream;
+
                         // broadcast our captured media to other
                         // participants in the room
                         this.rtc.addStream(localStream)
@@ -50,7 +56,8 @@ export default ComposedComponent => {
                             // to us for use
                             .on("call:started",
                                 (id, pc, data) => {
-                                    if (this.props.route.path === "audience") {
+                                    if (this.props.route.path
+                                        === "audience") {
                                         attach(
                                             pc.getRemoteStreams()[0],
                                             {el: audioContainer},
@@ -60,6 +67,7 @@ export default ComposedComponent => {
                                             }
                                         );
                                     }
+                                    console.log("STARTED", id);
                                 })
 
                             // when a peer leaves
@@ -67,6 +75,7 @@ export default ComposedComponent => {
                                 // TODO: need to terminate the stream
                                 console.log("ENDED", id);
                             });
+                        console.log(this.rtc);
                     })
                 .catch(err => console.error("ConnectSession", err));
         }
@@ -78,7 +87,13 @@ export default ComposedComponent => {
 
         componentWillUnmount() {
             if (this.rtc) {
+                if (this.localStream) {
+                    this.rtc.removeStream(this.localStream);
+                }
                 this.rtc.close();
+            }
+            if (this.socket) {
+                this.socket.disconnect();
             }
         }
 
@@ -98,8 +113,7 @@ export default ComposedComponent => {
                         </h5>
                     </div>
                     <ComposedComponent {...this.props} socket={this.socket}/>
-                    {
-                        <audio ref={this._setupVoiceRTC}/>}
+                    <audio ref={this._setupVoiceRTC}/>
                 </div>
             );
         }

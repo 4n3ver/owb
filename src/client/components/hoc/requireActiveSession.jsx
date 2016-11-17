@@ -6,6 +6,11 @@ import { connect } from "react-redux";
 
 export default ComposedComponent => {
     class Session extends Component {
+        constructor(props) {
+            super(props);
+            console.log("REQUIRE_ACTIVE_SESSION: constructed");
+        }
+
         componentWillMount() {
             if (!this.props.sessionEndPoint) {
                 this.context.router.push("/");
