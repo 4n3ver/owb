@@ -13,7 +13,8 @@ class Audience extends Component {
         this.state = {
             question: null,
             responds: null,
-            board   : null
+            board   : null,
+            watson  : ""
         };
     }
 
@@ -30,6 +31,9 @@ class Audience extends Component {
         this.props.socket.on("question", question => {
             this.setState({question});
         });
+        this.props.socket.on("watson-said", text => {
+            this.setState({watson: this.state.watson + text});
+        });
     }
 
     render() {
@@ -38,7 +42,15 @@ class Audience extends Component {
             <div>
                 <Board height={500} width={1100} allowDraw={false}
                     boardState={this.state.board}/>
-                <div className="ui one column grid">
+                <div className="ui two column doubling grid">
+                    <div className="column">
+                        <div className="ui segment">
+                            <div className="ui yellow label">
+                                Transcript
+                            </div>
+                            <p>{this.state.watson}</p>
+                        </div>
+                    </div>
                     <div className="column">
                         <Question question={this.state.question}
                             onAnswer={d => socket.emit("question-answered", d)}/>

@@ -14,7 +14,8 @@ export default ComposedComponent => {
             super(props);
             console.log(
                 `CONNECT_SESSION: ${API_URL}${this.props.sessionEndPoint}`);
-            this._bind("_onConnected", "_onDisconnected", "_setupVoiceRTC");
+            this._bind("_onConnected", "_onDisconnected", "_setupVoiceRTC",
+                       "_setupWatson");
             this.state = {connectionStatus: "disconnected"};
             this.socket = ws(`${API_URL}${this.props.sessionEndPoint}`);
             this.stream = navigator.mediaDevices.getUserMedia({audio: true});
@@ -56,32 +57,59 @@ export default ComposedComponent => {
                             // to us for use
                             .on("call:started",
                                 (id, pc, data) => {
-                                    if (this.props.route.path
-                                        === "audience") {
-                                        attach(
-                                            pc.getRemoteStreams()[0],
-                                            {el: audioContainer},
-                                            (err, el) => {
-                                                // TODO: what to do here?
-                                                //console.log(err, el);
-                                            }
-                                        );
+                                    if (this.props.route.path !== "audience") {
+                                        return;
                                     }
+                                    attach(
+                                        pc.getRemoteStreams()[0],
+                                        {el: audioContainer},
+                                        (err, el) => {
+                                            // TODO: what to do here?
+                                            //console.log(err, el);
+                                        }
+                                    );
                                     console.log("STARTED", id);
                                 })
 
                             // when a peer leaves
-                            .on("call:ended", function (id) {
+                            .on("call:ended", id => {
                                 // TODO: need to terminate the stream
                                 console.log("ENDED", id);
+                                if (this.localStream) {
+                                    this.rtc.removeStream(this.localStream);
+                                }
+                                this.rtc.close();
                             });
                     })
                 .catch(err => console.error("ConnectSession", err));
         }
 
+        _setupWatson() {
+            if (this.props.route.path !== "speaker") {
+                return;
+            }
+            const watsonOpts = {
+                token : localStorage.getItem("watson-token"),
+                format: true
+            };
+            this.watsonStream = WatsonSpeech.SpeechToText
+                                            .recognizeMicrophone(watsonOpts);
+
+            // get text instead of Buffers for on data events
+            this.watsonStream.setEncoding("utf8");
+            this.watsonStream.on("data", data => {
+                this.socket.emit("watson", data);
+                console.log("Watson:", data);
+            });
+            this.watsonStream.on("error", err => console.error(err));
+            this.watsonStream.on("playback-error", err => console.error(err));
+            console.log(this.watsonStream);
+        }
+
         componentDidMount() {
             this.socket.on("connect", this._onConnected);
             this.socket.on("disconnect", this._onDisconnected);
+            this._setupWatson();
         }
 
         componentWillUnmount() {
@@ -93,6 +121,10 @@ export default ComposedComponent => {
             }
             if (this.socket) {
                 this.socket.disconnect();
+            }
+            if (this.watsonStream) {
+                console.log("Stopping watson");
+                this.watsonStream.stop();
             }
         }
 

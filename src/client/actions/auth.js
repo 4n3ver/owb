@@ -35,6 +35,7 @@ const authenticate = endpoint =>
                 if (data.token) {
                     localStorage.setItem("token", data.token);
                     localStorage.setItem("email", email);
+                    localStorage.setItem("watson-token", data.watsonToken);
                     dispatch({type: AUTH_USER});
                     browserHistory.push("/");
                 } else {

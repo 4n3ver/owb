@@ -2,7 +2,7 @@
 "use strict";
 
 // tell webpack to copy static html and css to build folder
-require.context("../../public/", true, /^\.\/.*\.(html|css)/);
+require.context("../../public/", true, /^\.\/.*\.(html|css|js)/);
 
 import React from "react";
 import ReactDOM from "react-dom";

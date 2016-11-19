@@ -6,8 +6,8 @@ const fs = require("fs");
 
 const nodeModules = {};
 fs.readdirSync("node_modules")
-  .filter((x) => [".bin"].indexOf(x) === -1)
-  .forEach((mod) => nodeModules[mod] = `commonjs ${mod}`);
+  .filter(x => [".bin"].indexOf(x) === -1)
+  .forEach(mod => nodeModules[mod] = `commonjs ${mod}`);
 
 module.exports = [
     {
@@ -38,8 +38,8 @@ module.exports = [
                     }
                 },
                 {   // copy static (public) resources to build folder
-                    test   : /\.(html|css)$/,
-                    exclude: /(node_modules)/,
+                    test   : /\.(html|css|js)$/,
+                    exclude: /(node_modules|src)/,
                     loader : `file-loader?name=[path][name].[ext]&context=${
                         path.resolve(__dirname, "public/")}`
                 }

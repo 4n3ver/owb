@@ -44,7 +44,9 @@
     "socket.io-client": "^1.5.0",
     "tls": "0.0.1",
     "utf-8-validate": "^1.2.1",
-    "uuid": "^2.0.3"
+    "uuid": "^2.0.3",
+    "vcap_services": "^0.2.0",
+    "watson-developer-cloud": "^2.9.0"
   },
   "devDependencies": {
     "babel-core": "^6.14.0",

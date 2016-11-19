@@ -26,6 +26,11 @@ const onQuestionAnswered = (data, all) => function (payload) {
     all.emit("question-responds", data.responds);
 };
 
+const onWatson = (data, all) => function (payload) {
+    data.watson += payload;
+    all.emit("watson-said", payload);
+};
+
 const onDisconnect = socket => function () {
     socket.disconnect();    // make sure to close half-open connection
 };
@@ -42,6 +47,7 @@ const setupEventListener = nsp => {
         socket.on("question-asked", onQuestionAsked(data[nsp.name], nsp));
         socket.on("question-answered",
                   onQuestionAnswered(data[nsp.name], nsp));
+        socket.on("watson", onWatson(data[nsp.name], nsp));
 
         socket.emit("welcome", data[nsp.name]);
     });

@@ -1,3 +1,4 @@
+/* @flow */
 "use strict";
 
 import { encode } from "jwt-simple";

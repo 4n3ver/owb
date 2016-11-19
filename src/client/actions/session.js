@@ -29,7 +29,7 @@ export const createSession = () =>
             }
         },
         (dispatch, reason) => {
-            console.log(reason);
+            console.error(reason);
             dispatch(showSessionError(reason));
         }
     );
@@ -74,7 +74,7 @@ export const closeSession = () =>
             }
         },
         (dispatch, reason) => {
-            console.log(reason);
+            console.error(reason);
             dispatch(showSessionError(reason));
         }
     );
